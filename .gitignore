@@ -1,0 +1,9 @@
+venv/
+**/__pycache__
+./screenshot
+
+test.py
+image.png
+output.png
+.python-version
+layout_colorwidget.py

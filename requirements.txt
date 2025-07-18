@@ -1,0 +1,15 @@
+--extra-index-url https://download.pytorch.org/whl/cu128
+torch==2.3.0+cu128
+torchvision==0.18.0+cu128
+torchaudio==2.3.0+cu128
+
+pyside6
+numpy
+mss
+pillow
+easyocr
+opencv-python
+pygetwindow
+
+
+
