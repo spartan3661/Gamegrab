@@ -6,8 +6,6 @@ from utils import tools
 from functools import partial
 from PySide6.QtCore import Signal
 
-
-
 class Monitor(QWidget):
     """
     Main GUI class
@@ -71,7 +69,6 @@ class Monitor(QWidget):
         # finds and captures a screenshot of a window
         screens = tools.screen_list()
         selected_title = self.screen_menu.currentText()
-        #print(selected_title)
 
 
         if selected_title not in screens:
@@ -86,37 +83,34 @@ class Monitor(QWidget):
         self.original_image = tools.capture_screen(selected_title)
         if self.original_image is None:
             QMessageBox.warning(self, "Warning", "Could Not Capture Window!")
-            return
-        
-        # remove in final
-        if self.debug:
-            self.display_label.setFixedSize(self.original_image.size())      
+            return    
         
         # process and display the image
         pixmap = QPixmap.fromImage(self.original_image)
-        self.display_label.setMinimumSize(1, 1)
-        self.display_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.display_label.setPixmap(
-            pixmap.scaled(
-                self.display_label.size(),
-                Qt.AspectRatioMode.KeepAspectRatio,
-                Qt.TransformationMode.SmoothTransformation
-            )
+        scaled_pixmap = pixmap.scaled(
+            self.display_label.size(),
+            Qt.AspectRatioMode.KeepAspectRatio,
+            Qt.TransformationMode.SmoothTransformation
         )
+        self.display_label.setPixmap(scaled_pixmap)
+        self.display_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
-    # NOTE: DEBUG ONLY DO NOT REMOVE UNTIL FINAL
-    """
+    def rescale_pixmap(self):
+        if self.original_image.isNull():
+            return
+        target = self.display_label.contentsRect().size()  # new layouted size
+        if target.width() <= 0 or target.height() <= 0:
+            return
+        pm = QPixmap.fromImage(self.original_image)
+        self.display_label.setPixmap(pm.scaled(
+            target,
+            Qt.AspectRatioMode.KeepAspectRatio,
+            Qt.TransformationMode.SmoothTransformation
+        ))
+
     def resizeEvent(self, event: QResizeEvent):
-        if not self.display_label_original.pixmap().isNull():
-            scaled = self.display_label_original.pixmap().scaled(
-                self.size(),
-                Qt.AspectRatioMode.KeepAspectRatio,
-                Qt.TransformationMode.SmoothTransformation
-            )
-
-        return super().resizeEvent(event)
-
-    """
+        super().resizeEvent(event)
+        self.rescale_pixmap()
 
     def closeEvent(self, event: QCloseEvent) -> None:
         """
@@ -162,17 +156,16 @@ class Monitor(QWidget):
         button_layout.addWidget(self.ocr_button, stretch=1)
 
         self.display_label = QLabel()
-        
-        if self.debug:
-            self.display_label.setMaximumSize(800, 600)  # or use .setSizePolicy() for more flexibility  # for debugging, remove in final
-
+        self.display_label.setMinimumSize(1, 1)
+        self.display_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.display_label.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.display_label.setStyleSheet("background-color: black;")
+
 
         main_layout = QVBoxLayout()
         main_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         main_layout.addLayout(button_layout)
-        main_layout.addWidget(self.display_label)
+        main_layout.addWidget(self.display_label, stretch=1)
 
         return main_layout
     
