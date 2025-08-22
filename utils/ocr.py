@@ -54,7 +54,18 @@ class OCRWorker(QObject):
 
         ocr_image = cv2.cvtColor(image_arr, cv2.COLOR_RGBA2BGR)
         result = self.reader.readtext(ocr_image)
-    
+
+        texts = [text for _, text, _ in result]
+        uniq_order = []
+        seen = {}
+        for t in texts:
+            if t not in seen:
+                seen[t] = len(uniq_order)
+                uniq_order.append(t)
+        # batch translate
+        translated_uniq = self.translator.translate_many(uniq_order, target_lang="EN-US")
+        translated_texts = [translated_uniq[seen[t]] for t in texts]
+
         # Paint on the qimage using QPainter
         painter = QPainter(qimage)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
@@ -64,12 +75,9 @@ class OCRWorker(QObject):
         painter.setFont(font)
 
         # draw bounding box around detected text
-        for box, text, conf in result:
-            translated = self.translator.translate(text, target_lang="EN-US")
-
+        for (box, text, conf), translated in zip(result, translated_texts):
             top_left = tuple(map(int, box[0]))
             bottom_right = tuple(map(int, box[2]))
-
             x, y = top_left
             w = bottom_right[0] - x
             h = bottom_right[1] - y
