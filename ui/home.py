@@ -1,10 +1,11 @@
 from PySide6.QtWidgets import QWidget, QPushButton, QVBoxLayout, QComboBox, QMessageBox, QHBoxLayout, QLabel, QSizePolicy
-from PySide6.QtGui import QCloseEvent, QPixmap, QResizeEvent, QImage
+from PySide6.QtGui import QCloseEvent, QPixmap, QResizeEvent, QImage, QMovie
 from PySide6.QtCore import Qt, QThread
 from utils.ocr import OCRWorker
 from utils import tools
 from functools import partial
 from PySide6.QtCore import Signal
+from .settings_dialog import SettingsDialog
 
 class Monitor(QWidget):
     """
@@ -149,18 +150,36 @@ class Monitor(QWidget):
         self.ocr_button.setEnabled(False)
         self.ocr_button.setToolTip("Capture a screen first to enable OCR!")
 
+        self.settings_button = QPushButton("Settings")
+        self.settings_button.clicked.connect(self.open_settings)
+
         button_layout = QHBoxLayout()
         button_layout.addWidget(self.screen_menu, stretch=2)
         button_layout.addWidget(take_screenshot_button, stretch=2)
         button_layout.addWidget(refresh_button, stretch=1)
         button_layout.addWidget(self.ocr_button, stretch=1)
+        button_layout.addWidget(self.settings_button, stretch=0)
 
         self.display_label = QLabel()
         self.display_label.setMinimumSize(1, 1)
         self.display_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.display_label.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        self.display_label.setStyleSheet("background-color: black;")
+        self.display_label.setStyleSheet("background-color: #2E2E2E;")
 
+        # load custom image
+        """
+        pixmap = QPixmap("assets/space1.png")
+        scaled_pixmap = pixmap.scaled(
+            self.display_label.size(),
+            Qt.AspectRatioMode.KeepAspectRatio,
+            Qt.TransformationMode.SmoothTransformation
+        )       
+        self.display_label.setPixmap(scaled_pixmap)
+        self.display_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        """
+
+ 
 
         main_layout = QVBoxLayout()
         main_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
@@ -169,6 +188,10 @@ class Monitor(QWidget):
 
         return main_layout
     
+    def open_settings(self):
+        dlg = SettingsDialog(self)
+        dlg.exec()
+        
     def refresh_screens(self):
         """
         Refresh and display newly detected windows
@@ -198,6 +221,15 @@ class Monitor(QWidget):
 
         self.ocr_image = out_image
         # TODO: add bounding box labels to image regions
-        self.display_label.setPixmap(QPixmap.fromImage(self.ocr_image))
-        pass
+        #self.display_label.setPixmap(QPixmap.fromImage(self.ocr_image))
+
+        pixmap = QPixmap.fromImage(self.ocr_image)
+        scaled_pixmap = pixmap.scaled(
+            self.display_label.size(),
+            Qt.AspectRatioMode.KeepAspectRatio,
+            Qt.TransformationMode.SmoothTransformation
+        )
+        self.display_label.setPixmap(scaled_pixmap)
+        self.display_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
 

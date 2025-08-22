@@ -1,6 +1,7 @@
 import easyocr
 from PySide6.QtCore import QObject, Signal, Slot, Qt, QRect
 from PySide6.QtGui import QImage, QPainter, QColor, QFont, QFontDatabase, QFontMetrics
+from .translator import DeepLTranslator
 import cv2
 import numpy as np
 
@@ -27,6 +28,7 @@ class OCRWorker(QObject):
         """
         super().__init__()
         self.reader = easyocr.Reader(['ja','en'])
+        self.translator = DeepLTranslator()
 
     @Slot(QImage)
     def run_OCR(self, received_image: QImage):
@@ -63,6 +65,8 @@ class OCRWorker(QObject):
 
         # draw bounding box around detected text
         for box, text, conf in result:
+            translated = self.translator.translate(text, target_lang="EN-US")
+
             top_left = tuple(map(int, box[0]))
             bottom_right = tuple(map(int, box[2]))
 
@@ -70,7 +74,7 @@ class OCRWorker(QObject):
             w = bottom_right[0] - x
             h = bottom_right[1] - y
 
-            painter.setBrush(QColor(0, 255, 0, 255))
+            painter.setBrush(QColor(0, 0, 0, 200))
             painter.setPen(Qt.PenStyle.NoPen)
             painter.drawRect(x, y, w, h)
 
@@ -79,16 +83,16 @@ class OCRWorker(QObject):
             metrics = QFontMetrics(font)
 
             # shrink font to fit the bounding box
-            while (metrics.horizontalAdvance(text) > w or metrics.height() > h) and font_size > 6:
+            while (metrics.horizontalAdvance(translated) > w or metrics.height() > h) and font_size > 1:
                 font_size -= 1
                 font.setPointSize(font_size)
                 metrics = QFontMetrics(font)
 
             painter.setFont(font)
-            painter.setPen(QColor(0, 0, 0))
+            painter.setPen(QColor(255, 255, 255))
 
             text_rect = QRect(x, y, w, h)
-            painter.drawText(text_rect, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop, text)
+            painter.drawText(text_rect, Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter, translated)
 
         painter.end()
 

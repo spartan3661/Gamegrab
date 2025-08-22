@@ -6,7 +6,7 @@ app = QApplication(sys.argv)
 
 window = QMainWindow()
 window.setWindowTitle("OCR")
-
+window.resize(600, 600)
 monitor = Monitor()
 
 window.setCentralWidget(monitor)
