@@ -9,6 +9,7 @@ output.png
 .python-version
 layout_colorwidget.py
 credit.txt
+.vscode/
 
 x64/
 /Debug/
