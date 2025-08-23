@@ -10,7 +10,6 @@ x64/
 /Release/
 *.obj
 *.pdb
-*.dll
 *.exe
 *.ilk
 *.idb
