@@ -209,7 +209,7 @@ class Monitor(QWidget):
         """
         button.setEnabled(False)                # prevent multiple concurrent triggers
         self.ocr_running = True
-        self._ocr_t0 = time.perf_counter() 
+        #self._ocr_t0 = time.perf_counter() 
         self.start_OCR_signal.emit(self.original_image)
 
     def process_OCR(self, out_image):
@@ -238,7 +238,7 @@ class Monitor(QWidget):
         if self._ocr_t0 is not None:
             elapsed_ms = (time.perf_counter() - self._ocr_t0) * 1000.0
             self._ocr_t0 = None
-            print(f"OCR took {elapsed_ms:.1f} ms")
+            #print(f"OCR took {elapsed_ms:.1f} ms")
 
 
 
