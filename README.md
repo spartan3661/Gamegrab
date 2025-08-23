@@ -29,10 +29,11 @@ Use at your own risk, and please report issues if you try it out!
 - You must **grab a screen at least once** before OCR is enabled.
 - You must get at DeepL API key (free) in order to perform translation.
 - Image will appear low quality if viewed on a monitor with higher resolutions than the game window's monitor.
+- tested on python **3.11.5**
 
 ## Requirements
-- tested on python **3.11.5**
-- (Optional) Visual Studio 2022 with **Desktop Development with C++** workload to build DLL files
+- python **3.11.5**
+- Visual Studio 2022 with **Desktop Development with C++** workload to build DLL files
 - (Optional) PyTorch (GPU Acceleration)
 
 ## Installation
