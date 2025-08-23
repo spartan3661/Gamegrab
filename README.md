@@ -24,7 +24,6 @@ Use at your own risk, and please report issues if you try it out!
 - Works for full screen, borderless, and windowed modes
 
 ## Note
-- Currently, you must compile the dll file needed to run the OCR. In the future, the dll will be packaged into an exe
 - Visual Studio files included so you can build you own DLL if desired.
 - You must **grab a screen at least once** before OCR is enabled.
 - You must get at DeepL API key (free) in order to perform translation.
