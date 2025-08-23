@@ -8,7 +8,6 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DLL_PATH = os.path.join(BASE_DIR, "cpp_backend", "wgc_core.dll")
-print(DLL_PATH)
 dll = C.CDLL(DLL_PATH)
 
 class BGRAFrame(C.Structure):
