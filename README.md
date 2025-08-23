@@ -1,6 +1,7 @@
 # Game-OCR
 ![status](https://img.shields.io/badge/status-beta-orange)
 ![wip](https://img.shields.io/badge/🚧-work_in_progress-red)
+
 OCR app for video games — capture game windows, run OCR (EasyOCR), and optionally translate text.
 
 Game-OCR lets you capture text directly from PC game windows.  
