@@ -56,4 +56,5 @@ Use at your own risk, and please report issues if you try it out!
 5. Click **OCR** to recognize text
 
 ## License
+
 MIT License — see [LICENSE](LICENSE) for details.

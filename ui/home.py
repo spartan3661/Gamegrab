@@ -239,6 +239,3 @@ class Monitor(QWidget):
             elapsed_ms = (time.perf_counter() - self._ocr_t0) * 1000.0
             self._ocr_t0 = None
             #print(f"OCR took {elapsed_ms:.1f} ms")
-
-
-
