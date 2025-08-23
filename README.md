@@ -1,9 +1,19 @@
 # Game-OCR
+![status](https://img.shields.io/badge/status-beta-orange)
+![wip](https://img.shields.io/badge/🚧-work_in_progress-red)
 OCR app for video games — capture game windows, run OCR (EasyOCR), and optionally translate text.
 
 Game-OCR lets you capture text directly from PC game windows.  
 It supports **Japanese + English OCR** using [EasyOCR](https://github.com/JaidedAI/EasyOCR) and integrates with **DeepL** for automatic translation.
 Built with **PySide6** for the GUI, it’s designed to help players understand menus, dialogues, and HUD elements in games that don’t have English localization.
+
+
+## Disclaimer
+
+This project is **experimental** and currently in **beta**.  
+It is not a full-fledged app — expect bugs, missing features, and breaking changes.  
+
+Use at your own risk, and please report issues if you try it out!
 
 ## Features
 - Simple PySide6 GUI with screenshot, refresh, OCR, and API settings
@@ -43,6 +53,6 @@ Built with **PySide6** for the GUI, it’s designed to help players understand m
 3. Select a game window from the dropdown
 4. Click **Screen Grab** to capture it
 5. Click **OCR** to recognize text
-   
+
 ## License
 MIT License — see [LICENSE](LICENSE) for details.
