@@ -1,4 +1,4 @@
-# Game-OCR
+# Gamegrab
 ![status](https://img.shields.io/badge/status-beta-orange)
 ![wip](https://img.shields.io/badge/🚧-work_in_progress-red)
 
